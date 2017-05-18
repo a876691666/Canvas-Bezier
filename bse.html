@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>贝赛尔曲线</title>
+	<style type="text/css">
+	canvas{
+		position:absolute;
+		left:0;
+		top:0;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="_can" width="600" height="600"></canvas>
+	<canvas id="_can2" width="600" height="600"></canvas>
+	<script>
+		var bseList = [[0, 200],[100, 100], [200, 200]]
+		var c = document.getElementById("_can");
+		var ctx = c.getContext("2d");
+		var space = 150;
+
+		var c2 = document.getElementById("_can2");
+		var ctx2 = c2.getContext("2d");
+
+
+		var t, _t, tc=[], _tc, tc_;
+		function redraw (index){
+
+			ctx.beginPath();
+			ctx.lineWidth = "3";
+			ctx.strokeStyle="#ff0";
+
+			var b = bseList[0], b1 = bseList[1];
+			t = tc[0] = [(b1[0]-b[0])*index+b[0], (b1[1]-b[1])*index+b[1]];
+
+			ctx.moveTo.apply(ctx, t);
+
+			b = b1, b1 = bseList[2];
+			t = tc[1] = [(b1[0]-b[0])*index+b[0], (b1[1]-b[1])*index+b[1]];
+
+			ctx.lineTo.apply(ctx, t);
+			ctx.stroke();
+
+			_tc = [(tc[1][0]-tc[0][0])*index+tc[0][0], (tc[1][1]-tc[0][1])*index+tc[0][1]];
+			ctx.beginPath();
+			ctx.lineWidth="5";
+			ctx.strokeStyle="#f00";
+			ctx.moveTo.apply(ctx, _tc);
+			ctx.lineTo.apply(ctx, tc_||_tc);
+			ctx.stroke();
+
+			ctx2.beginPath();
+			ctx2.lineWidth="3";
+			ctx2.strokeStyle="#000";
+			ctx2.moveTo.apply(ctx2, _tc);
+			ctx2.lineTo.apply(ctx2, tc_||_tc);
+			ctx2.stroke();
+			tc_ = [_tc[0], _tc[1]];
+		}
+
+		function onSpace (){
+			c2.height = c2.height;
+			tc_ = null
+		}
+
+		function _redraw(){
+			if(!(timeIndex % space)) onSpace();
+			c.height=c.height;
+			ctx.lineWidth = "3";
+			ctx.strokeStyle="#000";
+
+			ctx.beginPath();
+			ctx.moveTo.apply(ctx, bseList[0]);
+			for(var i = 1;i<bseList.length;i++) ctx.lineTo.apply(ctx, bseList[i]);
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.lineWidth = "1";
+			ctx.strokeStyle="#0f0";
+			ctx.moveTo.apply(ctx, bseList[0]);
+			ctx.lineTo.apply(ctx, bseList[1]);
+			ctx.stroke();
+
+			redraw((timeIndex % space)/space);
+
+
+			timeIndex++;
+		}
+		var timeIndex = 0;
+		var t = setInterval(_redraw, 1000/60);
+	</script>
+</body>
+</html>
