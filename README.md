@@ -4,4 +4,4 @@
 ![image](https://raw.githubusercontent.com/a876691666/Canvas-Bezier/master/img/bse.gif)
 
 
-  ## [查看demo](https://a876691666.github.io/Canvas-Bezier/view.html)
+## [查看demo](https://a876691666.github.io/Canvas-Bezier/view.html)
