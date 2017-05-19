@@ -15,7 +15,7 @@
 	<canvas id="_can" width="600" height="600"></canvas>
 	<canvas id="_can2" width="600" height="600"></canvas>
 	<script>
-		var bseList = [[0, 200],[100, 100], [200, 200]]
+		var bseList = [[10,210],[10, 410],[410, 10], [410, 210]]
 		var c = document.getElementById("_can");
 		var ctx = c.getContext("2d");
 		var space = 150;
@@ -24,44 +24,41 @@
 		var ctx2 = c2.getContext("2d");
 
 
-		var t, _t, tc=[], _tc, tc_;
+		function bse(list, index){
+			var clist = [];
+			for(var i = 0; i<list.length-1;i++){
+				var b = list[i], b1 = list[i+1];
+				var t = [(b1[0]-b[0])*index+b[0], (b1[1]-b[1])*index+b[1]];
+				clist.push(t)
+			}
+			if(clist.length >1)for(var i = 0;i<clist.length-1;i++){
+				ctx.lineWidth = "3";
+				ctx.strokeStyle = "#00f";
+				ctx.moveTo.apply(ctx, clist[i]);
+				ctx.lineTo.apply(ctx, clist[i+1]);
+				ctx.stroke();
+			}
+			return clist.length < 2 ? clist[0] : bse(clist, index);
+		}
+		var t, _t;
 		function redraw (index){
 
-			ctx.beginPath();
-			ctx.lineWidth = "3";
-			ctx.strokeStyle="#ff0";
+			t = bse(bseList, index);
 
-			var b = bseList[0], b1 = bseList[1];
-			t = tc[0] = [(b1[0]-b[0])*index+b[0], (b1[1]-b[1])*index+b[1]];
-
-			ctx.moveTo.apply(ctx, t);
-
-			b = b1, b1 = bseList[2];
-			t = tc[1] = [(b1[0]-b[0])*index+b[0], (b1[1]-b[1])*index+b[1]];
-
-			ctx.lineTo.apply(ctx, t);
-			ctx.stroke();
-
-			_tc = [(tc[1][0]-tc[0][0])*index+tc[0][0], (tc[1][1]-tc[0][1])*index+tc[0][1]];
-			ctx.beginPath();
-			ctx.lineWidth="5";
-			ctx.strokeStyle="#f00";
-			ctx.moveTo.apply(ctx, _tc);
-			ctx.lineTo.apply(ctx, tc_||_tc);
-			ctx.stroke();
+			ctx2.lineWidth = "4";
+			ctx2.strokeStyle="#000";
 
 			ctx2.beginPath();
-			ctx2.lineWidth="3";
-			ctx2.strokeStyle="#000";
-			ctx2.moveTo.apply(ctx2, _tc);
-			ctx2.lineTo.apply(ctx2, tc_||_tc);
+			ctx2.moveTo.apply(ctx2, _t || t);
+			ctx2.lineTo.apply(ctx2, t);
 			ctx2.stroke();
-			tc_ = [_tc[0], _tc[1]];
+
+			_t = t;
 		}
 
 		function onSpace (){
 			c2.height = c2.height;
-			tc_ = null
+			_t = null
 		}
 
 		function _redraw(){
